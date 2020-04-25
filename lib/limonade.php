@@ -384,7 +384,7 @@ function run($env = null)
   {
     function after($output)
     {
-      return $output;
+      return error_notices_render() . $output;
     }
   }
   if(!function_exists('route_missing'))
@@ -428,7 +428,7 @@ function run($env = null)
         # 6.4 Call matching controller function and output result
         $output = call_user_func_array($route['callback'], array_values($route['params']));
         if(is_null($output)) $output = call_if_exists('autorender', $route);
-        echo after(error_notices_render() . $output, $route);
+        echo after($output, $route);
       }
       else halt(SERVER_ERROR, "Routing error: undefined function '{$route['callback']}'", $route);      
     }
@@ -1001,7 +1001,7 @@ function request_is_patch($env = null)
  */
 function request_methods()
 {
-  return array("GET","POST","PUT","DELETE","HEAD","PATCH");
+  return array("GET","POST","PUT","DELETE","HEAD","PATCH","OPTIONS");
 }
 
 /**
